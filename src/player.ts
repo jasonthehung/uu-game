@@ -1,5 +1,5 @@
 import * as readline from "readline"
-import { CHEESE_POSITION, Position } from "./cheese"
+import { CHEESE_POSITION, Cheese, Position } from "./cheese"
 import { isValidType } from "../tools/typeChecking"
 
 export class Player {
@@ -15,16 +15,17 @@ export class Player {
     private _remainingCheeses: number
     // how many cheeses the player has to place
     private _remainingCheesesToPlace: number
-    // // player's input
-    // private rl: readline.Interface
 
-    constructor(name: string) {
+    private _cheeese: Set<Cheese>
+
+    constructor(name: string, movable: boolean) {
         this._name = name
         this._score = 0
         this._moves = 0
-        this._movable = true
+        this._movable = movable
         this._remainingCheeses = 9
         this._remainingCheesesToPlace = 9
+        this._cheeese = new Set<Cheese>()
 
         // // Create the readline interface
         // this.rl = readline.createInterface({
@@ -40,6 +41,22 @@ export class Player {
 
     set remainingCheesesToPlace(value: number) {
         this._remainingCheesesToPlace = value
+    }
+
+    get getPlayerName(): string {
+        return this._name
+    }
+
+    get getPlayerMovable() {
+        return this._movable
+    }
+
+    set setPlayerMovable(value: boolean) {
+        this._movable = value
+    }
+
+    decRemainingCheesesToPlace() {
+        this._remainingCheesesToPlace--
     }
 
     // private processInput(input: string): string | null {

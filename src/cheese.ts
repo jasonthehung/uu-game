@@ -1,4 +1,21 @@
-export type Cheeses = Map<Position, Boolean>
+import { Player } from "./player"
+
+export class Cheese {
+    // the player who owns this cheese
+    private _belongTo: Player | null
+    // the position of this cheese
+    private _position: Position | null
+    // is this cheese eliminated?
+    private _eliminated: Boolean
+
+    constructor() {
+        this._belongTo = null
+        this._eliminated = false
+        this._position = null
+    }
+}
+
+export const validMovesChecker = new Map<Cheese, Cheese[]>()
 
 export const CHEESE_POSITION = [
     "A1",

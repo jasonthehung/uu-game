@@ -1,65 +1,97 @@
 import { isValidType } from "../tools/typeChecking"
+import { getUserInput } from "../tools/getUserInput"
+import { playerRoundChecking } from "../tools/playerRoundChecking"
 import { Board } from "./board"
 import { Position } from "./cheese"
 import { Player } from "./player"
 import * as readline from "readline"
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-})
-
 class Main {
     private board: Board
     private player1: Player
     private player2: Player
-    private remainingRounds: number
+    private round: number
+    private playerOneInputs: Position[]
+    private playerTwoInputs: Position[]
 
     constructor() {
         this.board = new Board()
-        this.player1 = new Player("Player 1")
-        this.player2 = new Player("Player 2")
-        this.remainingRounds = 300
+        this.player1 = new Player("Player 1", true)
+        this.player2 = new Player("Player 2", false)
+        this.round = 1
+        this.playerOneInputs = []
+        this.playerTwoInputs = []
     }
 
-    start() {
+    // start the game
+    async start() {
+        // print the board
         this.board.printBoard()
 
-        const playerOneInputs: Position[] = []
-        const playerTwoInputs: Position[] = []
+        // p1 and p2 place their cheeses before the game starts
+        while (
+            this.player1.getRemainingCheesesToPlace > 0 ||
+            this.player2.getRemainingCheesesToPlace > 0
+        ) {
+            const response = playerRoundChecking(
+                this.player1.getPlayerMovable,
+                this.player2.getPlayerMovable
+            )
+            let isValid = false
 
-        function processInput(input: string) {
-            if (input.toLowerCase() === "exit") {
-                // If the user types "exit," close the readline interface
-                rl.close()
-            } else {
-                if (isValidType(input.toUpperCase())) {
-                    // Record the input and continue reading more input
-                    playerOneInputs.push(input as Position)
+            switch (response) {
+                case "P1":
+                    console.log(
+                        `Round ${this.round}: ${this.player1.getPlayerName}'s turn`
+                    )
 
-                    rl.question(
-                        'Enter another input (or type "exit" to quit): ',
-                        processInput
+                    while (!isValid) {
+                        const input = await getUserInput()
+
+                        if (!isValidType(input)) {
+                            console.log("Invalid input type, please try again.")
+                        } else {
+                            isValid = true
+                        }
+                    }
+
+                    this.player1.setPlayerMovable = false
+                    this.player2.setPlayerMovable = true
+                    this.player1.decRemainingCheesesToPlace()
+                    break
+
+                case "P2":
+                    console.log(
+                        `Round ${this.round}: ${this.player2.getPlayerName}'s turn`
                     )
-                } else {
-                    rl.question(
-                        "Invalid input, please try again: ",
-                        processInput
-                    )
-                }
+
+                    while (!isValid) {
+                        const input = await getUserInput()
+
+                        if (!isValidType(input)) {
+                            console.log("Invalid input type, please try again.")
+                        } else {
+                            isValid = true
+                        }
+                    }
+
+                    this.player1.setPlayerMovable = true
+                    this.player2.setPlayerMovable = false
+                    this.player2.decRemainingCheesesToPlace()
+                    break
             }
+
+            this.round++
         }
 
-        rl.question('Enter an input (or type "exit" to quit): ', processInput)
-
-        // Add an event listener to handle close event if needed
-        rl.on("close", () => {
-            console.log("User inputs recorded:")
-            playerOneInputs.forEach((input, index) => {
-                console.log(`${index + 1}: ${input}`)
-            })
-            process.exit(0) // Optionally, exit the process gracefully
-        })
+        // // Add an event listener to handle close event if needed
+        // rl.on("close", () => {
+        //     console.log("User inputs recorded:")
+        //     this.playerOneInputs.forEach((input, index) => {
+        //         console.log(`${index + 1}: ${input}`)
+        //     })
+        //     process.exit(0) // Optionally, exit the process gracefully
+        // })
     }
 }
 

@@ -1,10 +1,10 @@
-import { Cheeses } from "./cheese"
+import { Cheese } from "./cheese"
 
 export class Board {
-    private _cheeses: Cheeses
+    private _cheeses: Cheese[]
 
     constructor() {
-        this._cheeses = new Map()
+        this._cheeses = []
     }
 
     printBoard() {
@@ -24,4 +24,6 @@ export class Board {
             A1 ----------------- D1 ----------------- G1
             `)
     }
+
+    updateBoard(cheese: Cheese) {}
 }

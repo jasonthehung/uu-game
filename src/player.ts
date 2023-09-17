@@ -12,7 +12,7 @@ export class Player {
     // is the player movable in this round?
     private _movable: boolean
     // how many cheeses the player has left
-    private _remainingCheeses: number
+    private _remainingCheeses: Cheese[]
     // how many cheeses the player has to place
     private _remainingCheesesToPlace: number
 
@@ -23,7 +23,7 @@ export class Player {
         this._score = 0
         this._moves = 0
         this._movable = movable
-        this._remainingCheeses = 9
+        this._remainingCheeses = []
         this._remainingCheesesToPlace = 9
         this._cheeese = new Set<Cheese>()
 
@@ -53,6 +53,10 @@ export class Player {
 
     set setPlayerMovable(value: boolean) {
         this._movable = value
+    }
+
+    set setRemainingCheeses(value: Cheese) {
+        this._remainingCheeses.push(value)
     }
 
     decRemainingCheesesToPlace() {

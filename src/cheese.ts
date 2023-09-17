@@ -8,10 +8,14 @@ export class Cheese {
     // is this cheese eliminated?
     private _eliminated: Boolean
 
-    constructor() {
+    constructor(position: Position) {
         this._belongTo = null
         this._eliminated = false
-        this._position = null
+        this._position = position
+    }
+
+    get getPosition(): Position | null {
+        return this._position
     }
 }
 

@@ -51,6 +51,8 @@ class Main {
                         if (!isValidType(input)) {
                             console.log("Invalid input type, please try again.")
                         } else {
+                            // update player's info.
+
                             isValid = true
                         }
                     }

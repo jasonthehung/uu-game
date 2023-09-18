@@ -1,43 +1,16 @@
-import { Cheese, Position } from "./cheese"
+import { Cheese, Position } from "./cheeses"
 import { Player } from "./player"
 
 export class Board {
-    private _cheeses: Map<Position, Cheese>
+    private _cheeses: Map<Position, Cheese | null>
 
-    constructor() {
-        this._cheeses = new Map<Position, Cheese>([
-            ["A1", new Cheese("A1")],
-            ["A4", new Cheese("A4")],
-            ["A7", new Cheese("A7")],
-            ["B2", new Cheese("B2")],
-            ["B4", new Cheese("B4")],
-            ["B6", new Cheese("B6")],
-            ["C3", new Cheese("C3")],
-            ["C4", new Cheese("C4")],
-            ["C5", new Cheese("C5")],
-            ["D1", new Cheese("D1")],
-            ["D2", new Cheese("D2")],
-            ["D3", new Cheese("D3")],
-            ["D5", new Cheese("D5")],
-            ["D6", new Cheese("D6")],
-            ["D7", new Cheese("D7")],
-            ["E3", new Cheese("E3")],
-            ["E4", new Cheese("E4")],
-            ["E5", new Cheese("E5")],
-            ["F2", new Cheese("F2")],
-            ["F4", new Cheese("F4")],
-            ["F6", new Cheese("F6")],
-            ["G1", new Cheese("G1")],
-            ["G4", new Cheese("G4")],
-            ["G7", new Cheese("G7")],
-        ])
-    }
+    constructor() {}
 
     public getCheese(value: string): Cheese {
         return this._cheeses.get(value as Position)!
     }
 
-    printBoard() {
+    getLastestCheesePosition() {
         const A1 = this._cheeses.get("A1")?.getPosition
         const A4 = this._cheeses.get("A4")?.getPosition
         const A7 = this._cheeses.get("A7")?.getPosition
@@ -62,6 +35,63 @@ export class Board {
         const G1 = this._cheeses.get("G1")?.getPosition
         const G4 = this._cheeses.get("G4")?.getPosition
         const G7 = this._cheeses.get("G7")?.getPosition
+
+        return {
+            A1,
+            A4,
+            A7,
+            B2,
+            B4,
+            B6,
+            C3,
+            C4,
+            C5,
+            D1,
+            D2,
+            D3,
+            D5,
+            D6,
+            D7,
+            E3,
+            E4,
+            E5,
+            F2,
+            F4,
+            F6,
+            G1,
+            G4,
+            G7,
+        }
+    }
+
+    printBoard() {
+        // get return value from getLastestCheesePosition()
+        const {
+            A1,
+            A4,
+            A7,
+            B2,
+            B4,
+            B6,
+            C3,
+            C4,
+            C5,
+            D1,
+            D2,
+            D3,
+            D5,
+            D6,
+            D7,
+            E3,
+            E4,
+            E5,
+            F2,
+            F4,
+            F6,
+            G1,
+            G4,
+            G7,
+        } = this.getLastestCheesePosition()
 
         console.log(`
             ${A1} ----------------- D7 ----------------- G7

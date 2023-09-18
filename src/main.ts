@@ -2,7 +2,7 @@ import { isValidType } from "../tools/typeChecking"
 import { getUserInput } from "../tools/getUserInput"
 import { playerRoundChecking } from "../tools/playerRoundChecking"
 import { Board } from "./board"
-import { Position } from "./cheese"
+import { Cheese, Position } from "./cheeses"
 import { Player } from "./player"
 import * as readline from "readline"
 
@@ -51,7 +51,8 @@ class Main {
                         if (!isValidType(input)) {
                             console.log("Invalid input type, please try again.")
                         } else {
-                            // update player's info.
+                            // update cheese object
+                            // update player object
 
                             isValid = true
                         }
@@ -59,7 +60,7 @@ class Main {
 
                     this.player1.setPlayerMovable = false
                     this.player2.setPlayerMovable = true
-                    this.player1.decRemainingCheesesToPlace()
+                    this.player1.decrementCheesesToPlace()
                     break
 
                 case "P2":

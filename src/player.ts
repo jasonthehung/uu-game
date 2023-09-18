@@ -1,127 +1,81 @@
 import * as readline from "readline"
-import { CHEESE_POSITION, Cheese, Position } from "./cheese"
+import { CHEESE_POSITION, Cheese, Position } from "./cheeses"
 import { isValidType } from "../tools/typeChecking"
 
 export class Player {
     // player's name
     private _name: string
     // player's score
-    private _score: number
+    private _score: number = 0
     // how many moves the player has made
-    private _moves: number
+    private _moves: number = 0
     // is the player movable in this round?
-    private _movable: boolean
-    // how many cheeses the player has left
-    private _remainingCheeses: Cheese[]
-    // how many cheeses the player has to place
-    private _remainingCheesesToPlace: number
+    private _moved: boolean
+    // total cheeses that the player has
+    private _cheeese: Set<Cheese> = new Set<Cheese>()
 
-    private _cheeese: Set<Cheese>
-
-    constructor(name: string, movable: boolean) {
+    constructor(name: string, moved: boolean) {
         this._name = name
-        this._score = 0
-        this._moves = 0
-        this._movable = movable
-        this._remainingCheeses = []
-        this._remainingCheesesToPlace = 9
-        this._cheeese = new Set<Cheese>()
-
-        // // Create the readline interface
-        // this.rl = readline.createInterface({
-        //     input: process.stdin,
-        //     output: process.stdout,
-        // })
+        this._moved = moved
     }
 
-    // get remainingCheesesToPlace
-    get getRemainingCheesesToPlace(): number {
-        return this._remainingCheesesToPlace
-    }
-
-    set remainingCheesesToPlace(value: number) {
-        this._remainingCheesesToPlace = value
-    }
-
+    // * Getter
+    // get the player's name
     get getPlayerName(): string {
         return this._name
     }
 
-    get getPlayerMovable() {
-        return this._movable
+    // # Setter
+    // set the player's name
+    set setPlayerName(name: string) {
+        this._name = name
     }
 
-    set setPlayerMovable(value: boolean) {
-        this._movable = value
+    // * Getter
+    // get the player's score
+    get getPlayerScore(): number {
+        return this._score
     }
 
-    set setRemainingCheeses(value: Cheese) {
-        this._remainingCheeses.push(value)
+    // # Setter
+    // set the player's score
+    set setPlayerScore(score: number) {
+        this._score = score
     }
 
-    decRemainingCheesesToPlace() {
-        this._remainingCheesesToPlace--
+    // * Getter
+    // get the player's moves
+    get getPlayerMoves(): number {
+        return this._moves
     }
 
-    // private processInput(input: string): string | null {
-    //     let output = null
+    // # Setter
+    // set the player's moves
+    set setPlayerMoves(moves: number) {
+        this._moves = moves
+    }
 
-    //     if (input.toLowerCase() === "exit" || !this._movable) {
-    //         // stop reading input
-    //         this.rl.close()
-    //     } else {
-    //         // return true or false
-    //         if (isValidType(input.toUpperCase())) {
-    //             console.log(`You entered: ${input}`)
-    //             output = input.toUpperCase()
+    // * Getter
+    // get the player's movable status
+    get getPlayerMovable(): boolean {
+        return this._moved
+    }
 
-    //             this._movable = false
+    // # Setter
+    // set the player's movable status
+    set setPlayerMovable(moved: boolean) {
+        this._moved = moved
+    }
 
-    //             // stop reading input
-    //             // this.rl.close()
-    //         } else {
-    //             console.log("Invalid input, please try again.")
+    // * Getter
+    // get the player's cheeses set
+    get getCheeese(): Set<Cheese> {
+        return this._cheeese
+    }
 
-    //             // start over reading input
-    //             this.getUserInput()
-    //         }
-    //     }
-    //     return output
-    // }
-
-    // getUserInput() {
-    //     this.rl.question(
-    //         'Place your cheese (or type "exit" to quit): ',
-    //         this.processInput
-    //     )
-    // }
-
-    // async getUserInput(): Promise<string | null> {
-    //     return new Promise<string | null>((resolve) => {
-    //         this.rl.question(
-    //             'Place your cheese (or type "exit" to quit): ',
-    //             (input) => {
-    //                 if (input.toLowerCase() === "exit" || !this._movable) {
-    //                     // Stop reading input
-    //                     this.rl.close()
-    //                     resolve(null) // Resolve with null when the input indicates quitting
-    //                 } else {
-    //                     if (this.isValidType(input.toUpperCase())) {
-    //                         console.log(`You entered: ${input}`)
-    //                         this._movable = false
-
-    //                         // Stop reading input and resolve with the valid input
-    //                         this.rl.close()
-    //                         resolve(input.toUpperCase())
-    //                     } else {
-    //                         console.log("Invalid input, please try again.")
-
-    //                         // Start over reading input by recursively calling getUserInput
-    //                         this.getUserInput().then(resolve)
-    //                     }
-    //                 }
-    //             }
-    //         )
-    //     })
-    // }
+    // # Setter
+    // set the player's cheeses set
+    set setCheeese(cheese: Cheese) {
+        this._cheeese.add(cheese)
+    }
 }

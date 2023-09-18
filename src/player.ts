@@ -1,5 +1,6 @@
 import * as readline from "readline"
-import { CHEESE_POSITION, Cheese, Position } from "./cheeses"
+import { CHEESE_POSITION, Cheese } from "./cheeses"
+
 import { isValidType } from "../tools/typeChecking"
 
 export class Player {

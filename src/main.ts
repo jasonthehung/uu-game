@@ -1,8 +1,8 @@
-import { isValidType } from "../tools/typeChecking"
+import { Position, isValidType } from "../tools/typeChecking"
 import { getUserInput } from "../tools/getUserInput"
 import { playerRoundChecking } from "../tools/playerRoundChecking"
 import { Board } from "./board"
-import { Cheese, Position } from "./cheeses"
+import { Cheese } from "./cheeses"
 import { Player } from "./player"
 import * as readline from "readline"
 
@@ -29,10 +29,7 @@ class Main {
         this.board.printBoard()
 
         // p1 and p2 place their cheeses before the game starts
-        while (
-            this.player1.getRemainingCheesesToPlace > 0 ||
-            this.player2.getRemainingCheesesToPlace > 0
-        ) {
+        while (true) {
             const response = playerRoundChecking(
                 this.player1.getPlayerMovable,
                 this.player2.getPlayerMovable
@@ -60,7 +57,7 @@ class Main {
 
                     this.player1.setPlayerMovable = false
                     this.player2.setPlayerMovable = true
-                    this.player1.decrementCheesesToPlace()
+                    // this.player1.decrementCheesesToPlace()
                     break
 
                 case "P2":
@@ -80,7 +77,7 @@ class Main {
 
                     this.player1.setPlayerMovable = true
                     this.player2.setPlayerMovable = false
-                    this.player2.decRemainingCheesesToPlace()
+                    // this.player2.decRemainingCheesesToPlace()
                     break
             }
 

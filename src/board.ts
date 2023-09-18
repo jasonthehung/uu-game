@@ -1,4 +1,5 @@
-import { Cheese, Position } from "./cheeses"
+import { Position } from "../tools/typeChecking"
+import { Cheese } from "./cheeses"
 import { Player } from "./player"
 
 export class Board {

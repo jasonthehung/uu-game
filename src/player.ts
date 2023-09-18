@@ -12,6 +12,8 @@ export class Player {
     private _moves: number = 0
     // is the player movable in this round?
     private _moved: boolean
+    // player's icon
+    private _icon: string = "◼︎"
     // total cheeses that the player has
     private _cheeese: Set<Cheese> = new Set<Cheese>()
 

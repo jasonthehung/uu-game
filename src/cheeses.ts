@@ -9,13 +9,13 @@ export class Cheese {
     // is this cheese eliminated?
     private _eliminated: Boolean
 
-    constructor(position?: Position) {
-        this._belongTo = null
+    constructor(player?: Player, position?: Position) {
+        this._belongTo = player || null
         this._position = position || null
         this._eliminated = false
     }
 
-    get getPosition(): Position | null {
+    get position(): Position | null {
         return this._position
     }
 }

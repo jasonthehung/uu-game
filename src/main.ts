@@ -15,8 +15,8 @@ class Main {
 
     constructor() {
         this.board = new Board()
-        this.player1 = new Player("Player 1", true, "¢")
-        this.player2 = new Player("Player 2", false, "ß")
+        this.player1 = new Player("Player 1", false, "¢")
+        this.player2 = new Player("Player 2", true, "ß")
         this.playerOneInputs = []
         this.playerTwoInputs = []
     }
@@ -32,13 +32,14 @@ class Main {
 
         while (p1.cheeses.size < 9 || p2.cheeses.size < 9) {
             const currentPlayer = p1.moved ? p2 : p1
-            await this.getPlayerMove(currentPlayer, this.board)
+            const response = await this.getPlayerMove(currentPlayer, this.board)
             p1.moved = !p1.moved
             p2.moved = !p2.moved
             this.board.round++
-        }
 
-        console.log(this.player1.cheeses)
+            // @ TODO
+            await this.updateBoard(this.board, currentPlayer, response)
+        }
 
         // // Add an event listener to handle close event if needed
         // rl.on("close", () => {
@@ -50,9 +51,21 @@ class Main {
         // })
     }
 
+    // @ TODO
+    async updateBoard(board: Board, player: Player, response: Cheese) {
+        board.round++
+
+        if (!board.state.has(response.position as Position)) {
+            board.state.set(response.position as Position, response)
+        } else {
+            throw new Error("Bug: Duplicate position !!!")
+        }
+    }
+
     async getPlayerMove(player: Player, board: Board) {
         console.log(`Round [${board.round}]: ${player.name}'s turn`)
 
+        let response: Cheese | null = null
         let isValid = false
 
         while (!isValid) {
@@ -68,7 +81,8 @@ class Main {
                         "You have already placed a cheese here, please try again."
                     )
                 } else {
-                    player.cheeses.add(new Cheese(input))
+                    response = new Cheese(player, input)
+                    player.cheeses.add(response)
                     player.moves++
                     isValid = true
                 }
@@ -76,6 +90,8 @@ class Main {
         }
 
         player.moved = false
+
+        return response as Cheese
     }
 }
 

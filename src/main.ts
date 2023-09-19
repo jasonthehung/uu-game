@@ -36,7 +36,7 @@ class Main {
 
             // @ TODO
             await this.updateBoard(this.board, response)
-            this.board.printBoardA()
+            this.board.printBoard()
         }
 
         // // Add an event listener to handle close event if needed

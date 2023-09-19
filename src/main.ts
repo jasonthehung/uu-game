@@ -1,10 +1,8 @@
 import { Position, isValidType } from "../tools/typeChecking"
 import { getUserInput } from "../tools/getUserInput"
-import { playerRoundChecking } from "../tools/playerRoundChecking"
 import { Board } from "./board"
 import { Cheese } from "./cheeses"
 import { Player } from "./player"
-import * as readline from "readline"
 
 class Main {
     private board: Board
@@ -15,8 +13,8 @@ class Main {
 
     constructor() {
         this.board = new Board()
-        this.player1 = new Player("Player 1", false, "¢")
-        this.player2 = new Player("Player 2", true, "ß")
+        this.player1 = new Player("Player 1", false, "⚫️")
+        this.player2 = new Player("Player 2", true, "⚪️")
         this.playerOneInputs = []
         this.playerTwoInputs = []
     }
@@ -37,7 +35,8 @@ class Main {
             p2.moved = !p2.moved
 
             // @ TODO
-            await this.updateBoard(this.board, currentPlayer, response)
+            await this.updateBoard(this.board, response)
+            this.board.printBoardA()
         }
 
         // // Add an event listener to handle close event if needed
@@ -50,15 +49,15 @@ class Main {
         // })
     }
 
-    // @ TODO
-    async updateBoard(board: Board, player: Player, response: Cheese) {
-        board.round++
+    async updateBoard(board: Board, response: Cheese) {
+        const position = response.position as Position
 
-        if (!board.state.has(response.position as Position)) {
-            board.state.set(response.position as Position, response)
+        if (!board.state.has(position)) {
+            board.state.set(position, response)
         } else {
             throw new Error("Bug: Duplicate position !!!")
         }
+        board.round++
     }
 
     async getPlayerMove(player: Player, board: Board) {

@@ -18,6 +18,10 @@ export class Cheese {
     get position(): Position | null {
         return this._position
     }
+
+    get belongTo(): Player | null {
+        return this._belongTo
+    }
 }
 
 export const validMovesChecker = new Map<Cheese, Cheese[]>()

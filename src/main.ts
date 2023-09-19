@@ -35,7 +35,6 @@ class Main {
             const response = await this.getPlayerMove(currentPlayer, this.board)
             p1.moved = !p1.moved
             p2.moved = !p2.moved
-            this.board.round++
 
             // @ TODO
             await this.updateBoard(this.board, currentPlayer, response)
@@ -76,9 +75,10 @@ class Main {
             } else {
                 const existingCheese = board.state.get(input)
 
-                if (existingCheese !== null) {
+                // use `!=` instead of `!==` because `existingCheese` can be null or undefined
+                if (existingCheese != null) {
                     console.log(
-                        "You have already placed a cheese here, please try again."
+                        "Spot already taken, please choose another spot."
                     )
                 } else {
                     response = new Cheese(player, input)

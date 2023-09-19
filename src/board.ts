@@ -42,6 +42,10 @@ export class Board {
         })
     }
 
+    get state(): Map<Position, Cheese | null> {
+        return this._state
+    }
+
     printBoard() {
         console.log(`
             A7 ----------------- D7 ----------------- G7

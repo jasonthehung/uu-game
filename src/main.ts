@@ -16,8 +16,8 @@ class Main {
 
     constructor() {
         this.board = new Board()
-        this.player1 = new Player("Player 1", true)
-        this.player2 = new Player("Player 2", false)
+        this.player1 = new Player("Player 1", true, "¢")
+        this.player2 = new Player("Player 2", false, "ß")
         this.round = 1
         this.playerOneInputs = []
         this.playerTwoInputs = []
@@ -28,19 +28,18 @@ class Main {
         // print the board
         this.board.printBoard()
 
+        // assign the player object to p1, p2 variable
+        let p1 = this.player1
+        let p2 = this.player2
+
         // p1 and p2 place their cheeses before the game starts
-        while (true) {
-            const response = playerRoundChecking(
-                this.player1.getPlayerMovable,
-                this.player2.getPlayerMovable
-            )
+        while (p1.cheeses.size < 9 || p2.cheeses.size < 9) {
+            const player = playerRoundChecking(p1.moved, p2.moved)
             let isValid = false
 
-            switch (response) {
+            switch (player) {
                 case "P1":
-                    console.log(
-                        `Round ${this.round}: ${this.player1.getPlayerName}'s turn`
-                    )
+                    console.log(`Round [${this.round}]: ${p1.name}'s turn`)
 
                     while (!isValid) {
                         const input = await getUserInput()
@@ -48,22 +47,26 @@ class Main {
                         if (!isValidType(input)) {
                             console.log("Invalid input type, please try again.")
                         } else {
-                            // update cheese object
-                            // update player object
+                            if (this.board.state.get(input) !== null) {
+                                console.log(
+                                    "You have already placed a cheese here, please try again."
+                                )
+                            } else {
+                                p1.cheeses.add(new Cheese(input))
+                                // 紀錄玩家的總步數
+                                p1.moves = p1.moves + 1
 
-                            isValid = true
+                                isValid = true
+                            }
                         }
                     }
 
-                    this.player1.setPlayerMovable = false
-                    this.player2.setPlayerMovable = true
-                    // this.player1.decrementCheesesToPlace()
+                    p1.moved = false
+                    p2.moved = true
                     break
 
                 case "P2":
-                    console.log(
-                        `Round ${this.round}: ${this.player2.getPlayerName}'s turn`
-                    )
+                    console.log(`Round [${this.round}]: ${p2.name}'s turn`)
 
                     while (!isValid) {
                         const input = await getUserInput()
@@ -71,18 +74,24 @@ class Main {
                         if (!isValidType(input)) {
                             console.log("Invalid input type, please try again.")
                         } else {
+                            // add Cheese to player's cheese set
+                            p2.cheeses.add(new Cheese(input))
+                            // 紀錄玩家的總步數
+                            p2.moves = p2.moves + 1
+
                             isValid = true
                         }
                     }
 
-                    this.player1.setPlayerMovable = true
-                    this.player2.setPlayerMovable = false
-                    // this.player2.decRemainingCheesesToPlace()
+                    p1.moved = true
+                    p2.moved = false
                     break
             }
 
             this.round++
         }
+
+        console.log(this.player1.cheeses)
 
         // // Add an event listener to handle close event if needed
         // rl.on("close", () => {

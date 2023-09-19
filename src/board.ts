@@ -5,6 +5,7 @@ import { Player } from "./player"
 export class Board {
     // the cheeses on the board or not
     private _state: Map<Position, Cheese | null>
+    private _round: number = 1
 
     constructor() {
         this._state = new Map<Position, Cheese | null>()
@@ -44,6 +45,14 @@ export class Board {
 
     get state(): Map<Position, Cheese | null> {
         return this._state
+    }
+
+    get round(): number {
+        return this._round
+    }
+
+    set round(round: number) {
+        this._round = round
     }
 
     printBoard() {

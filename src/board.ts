@@ -29,7 +29,7 @@ export class Board {
         this._round = round
     }
 
-    printBoard() {
+    async printBoard() {
         const P = []
 
         for (const position of CHEESE_POSITION) {
@@ -39,21 +39,36 @@ export class Board {
             )
         }
 
-        console.log(`
-            ${P[2]} ----------------- ${P[14]} ----------------- ${P[23]}
+        console.log(
+            `
+        7   ${P[2]} ----------------- ${P[14]} ----------------- ${P[23]}
             |                    |                    |
-            |     ${P[5]} ------------${P[13]}------------ ${P[20]}    |
+        6   |     ${P[5]} ------------${P[13]}------------ ${P[20]}    |
             |     |              |              |     |
-            |     |      ${P[7]}------${P[12]}------${P[17]}     |     |
+        5   |     |      ${P[8]}------${P[12]}------${P[17]}     |     |
             |     |      |                |     |     |
-            ${P[1]} -- ${P[4]} --- ${P[11]}              ${P[16]} --- ${P[19]} -- ${P[22]}
+        4   ${P[1]} -- ${P[4]} --- ${P[7]}              ${P[16]} --- ${P[19]} -- ${P[22]}
             |     |      |                |     |     |
-            |     |      ${P[6]}------${P[10]}------${P[15]}     |     |
+        3   |     |      ${P[6]}------${P[11]}------${P[15]}     |     |
             |     |              |              |     |
-            |     ${P[3]} ----------- ${P[9]} ----------- ${P[18]}    |
+        2   |     ${P[3]} ----------- ${P[10]} ----------- ${P[18]}    |
             |                    |                    |
-            ${P[0]} ----------------- ${P[8]} ----------------- ${P[21]}
-            `)
+        1   ${P[0]} ----------------- ${P[9]} ----------------- ${P[21]}
+
+            A      B      C       D       E      F     G
+            `
+        )
+    }
+
+    async updateBoard(board: Board, response: Cheese) {
+        const position = response.position as Position
+
+        if (!board.state.has(position)) {
+            board.state.set(position, response)
+        } else {
+            throw new Error("Bug: Duplicate position !!!")
+        }
+        board.round++
     }
 
     // printBoard() {

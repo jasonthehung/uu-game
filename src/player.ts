@@ -1,7 +1,7 @@
-import * as readline from "readline"
-import { CHEESE_POSITION, Cheese } from "./cheeses"
-
 import { isValidType } from "../tools/typeChecking"
+import { getUserInput } from "../tools/getUserInput"
+import { Board } from "./board"
+import { Cheese } from "./cheeses"
 
 export class Player {
     // player's name
@@ -66,4 +66,52 @@ export class Player {
     get cheeses(): Set<Cheese> {
         return this._cheeese
     }
+
+    // @ TODO
+    async moveCheese(player: Player, board: Board) {
+        // 1. 選擇要移動的棋子 (只能是自己的棋子)
+        // 2. 選擇要移動到的位置 (只能是空的位置)
+        // 3. 移動棋子
+        // 4. 檢查是否有連成一線，若有，則可以選擇對方的一枚棋子移除
+        // 5. 若有移除對方的棋子，則對方棋子數量減一
+        // * 應該是在外面
+        // 6. 若對方棋子數量少於 3 個，則遊戲結束
+        // 7. 若對方無法移動棋子，則遊戲結束
+    }
+
+    async placeCheese(player: Player, board: Board) {
+        console.log(`Round [${board.round}]: ${player.name}'s turn`)
+
+        let response: Cheese | null = null
+        let isValid = false
+
+        while (!isValid) {
+            const input = await getUserInput()
+
+            if (!isValidType(input)) {
+                console.log("Invalid input type, please try again.")
+            } else {
+                const existingCheese = board.state.get(input)
+
+                // use `!=` instead of `!==` because `existingCheese` can be null or undefined
+                if (existingCheese != null) {
+                    console.log(
+                        "Spot already taken, please choose another spot."
+                    )
+                } else {
+                    response = new Cheese(player, input)
+                    player.cheeses.add(response)
+                    player.moves++
+                    isValid = true
+                }
+            }
+        }
+
+        player.moved = false
+
+        return response as Cheese
+    }
+
+    // @ TODO
+    async selectCheese(player: Player) {}
 }

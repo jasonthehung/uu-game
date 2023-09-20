@@ -1,6 +1,7 @@
 import * as readline from "readline"
+import { Position, isValidType } from "../tools/typeChecking"
 
-export async function getUserInput(isMovingStage: boolean): Promise<string> {
+export async function getUserInput(isMovingStage: boolean): Promise<Position> {
     const questionText = isMovingStage
         ? "Select a cheese to move: "
         : "Select a spot to place your cheese: "
@@ -10,10 +11,16 @@ export async function getUserInput(isMovingStage: boolean): Promise<string> {
         output: process.stdout,
     })
 
-    return new Promise<string>((resolve) => {
+    return new Promise<Position>((resolve) => {
         rl.question(questionText, (input) => {
-            rl.close()
-            resolve(input)
+            if (isValidType(input)) {
+                rl.close()
+                resolve(input as Position)
+            } else {
+                console.log("Invalid position, please try again.")
+                rl.close()
+                resolve(getUserInput(isMovingStage))
+            }
         })
     })
 }

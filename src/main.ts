@@ -31,7 +31,8 @@ class Main {
             // 開始放置棋子
             const response = await currentPlayer.placeCheese(
                 currentPlayer,
-                this.board
+                this.board,
+                false
             )
             // 回合交換
             p1.moved = !p1.moved
@@ -55,12 +56,13 @@ class Main {
             console.log(
                 `Round [${this.board.round}]: ${currentPlayer.name}'s turn`
             )
-            console.log(`Select a cheese to move:`)
-            const response = await currentPlayer.moveCheese(
+
+            // 選擇要移動的棋子
+            const response = await currentPlayer.selectCheese(
                 currentPlayer,
-                this.board
+                this.board,
+                true
             )
-            console.log(response)
 
             currentPlayer.moveCheese(p1, this.board)
         }

@@ -79,10 +79,9 @@ export class Player {
         // 7. 若對方無法移動棋子，則遊戲結束
     }
 
-    async placeCheese(player: Player, board: Board) {
+    async placeCheese(player: Player, board: Board, isMovingStage: boolean) {
         console.log(`Round [${board.round}]: ${player.name}'s turn`)
 
-        const isMovingStage = false
         let response: Cheese | null = null
         let isValid = false
 
@@ -114,5 +113,12 @@ export class Player {
     }
 
     // @ TODO
-    async selectCheese(player: Player) {}
+    async selectCheese(player: Player, board: Board, isMovingStage: boolean) {
+        // get user input (the position of the cheese that the player wants to move)
+        const input = await getUserInput(isMovingStage)
+
+        // 從board.state中找到對應的cheese並檢查是否為null
+        // if (board.state.get(input) != null)
+        // const selectedCheese =
+    }
 }

@@ -80,7 +80,19 @@ export class Player {
             )
         }
         // 1. 選擇要移動的棋子 (只能是自己的棋子)
-        // 2. 選擇要移動到的位置 (只能是空的位置)
+        // 2. 選擇要移動到的位置 (只能是空的位置和合法的位置)
+        let isValid = false
+        while (!isValid) {
+            const thePlaceWantToMoveTo = await getUserInput(STAGE.MOVING)
+            if (board.state.get(thePlaceWantToMoveTo) != null) {
+                console.log(
+                    "The place is accupied, please choice another place."
+                )
+            } else {
+                isValid = true
+            }
+        }
+
         // 3. 移動棋子
         // 4. 檢查是否有連成一線，若有，則可以選擇對方的一枚棋子移除
         // 5. 若有移除對方的棋子，則對方棋子數量減一

@@ -63,10 +63,8 @@ class Main {
                 this.board
             )
 
-            console.log(`seletedCheese: ${seletedCheese}`)
-
             // 選擇要移動到的位置
-            currentPlayer.moveCheeseTo(
+            await currentPlayer.moveCheeseTo(
                 currentPlayer,
                 this.board,
                 (seletedCheese as Cheese) || null

@@ -6,10 +6,10 @@ export async function getUserInput(stage: Stage): Promise<Position> {
 
     switch (stage) {
         case "placing":
-            questionText = "Place a cheese:"
+            questionText = "Place a cheese: "
             break
         case "selecting":
-            questionText = "Select a cheese to move:"
+            questionText = "Select a cheese to move: "
             break
         case "moving":
             questionText = "Select a spot that you want to move to: "

@@ -5,6 +5,8 @@ export function isValidType(input: string): input is Position {
     return CHEESE_POSITION.includes(input)
 }
 
+export type Stage = "placing" | "selecting" | "moving"
+
 export type Position =
     | "A1"
     | "A4"

@@ -60,6 +60,7 @@ export class Board {
         )
     }
 
+    // @ TODO: 應該還要有狀態改變的參數
     async updateBoard(board: Board, response: Cheese) {
         const position = response.position as Position
 

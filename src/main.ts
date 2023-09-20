@@ -58,13 +58,28 @@ class Main {
             )
 
             // 選擇要移動的棋子
-            const response = await currentPlayer.selectCheese(
+            const seletedCheese = await currentPlayer.selectCheese(
                 currentPlayer,
-                this.board,
-                true
+                this.board
             )
 
-            currentPlayer.moveCheese(p1, this.board)
+            console.log(`seletedCheese: ${seletedCheese}`)
+
+            // 選擇要移動到的位置
+            currentPlayer.moveCheeseTo(
+                currentPlayer,
+                this.board,
+                (seletedCheese as Cheese) || null
+            )
+
+            // 回合交換
+            p1.moved = !p1.moved
+            p2.moved = !p2.moved
+
+            // 更新棋盤
+            // await this.board.updateBoard(this.board, response)
+            // 印出棋盤
+            await this.board.printBoard()
         }
 
         // // Add an event listener to handle close event if needed

@@ -1,7 +1,8 @@
-import { isValidType } from "../tools/typeChecking"
+import { Position, isValidType } from "../tools/typeChecking"
 import { getUserInput } from "../tools/getUserInput"
 import { Board } from "./board"
 import { Cheese } from "./cheeses"
+import { STAGE } from "./config"
 
 export class Player {
     // player's name
@@ -68,7 +69,16 @@ export class Player {
     }
 
     // @ TODO
-    async moveCheese(player: Player, board: Board) {
+    async moveCheeseTo(
+        player: Player,
+        board: Board,
+        selectedCheese: Cheese | null
+    ) {
+        if (selectedCheese === null) {
+            throw new Error(
+                "Variable 'selectedCheese' in 'moveCheeseTo' function is null"
+            )
+        }
         // 1. 選擇要移動的棋子 (只能是自己的棋子)
         // 2. 選擇要移動到的位置 (只能是空的位置)
         // 3. 移動棋子
@@ -86,7 +96,7 @@ export class Player {
         let isValid = false
 
         while (!isValid) {
-            const input = await getUserInput(isMovingStage)
+            const input = await getUserInput("placing")
 
             if (!isValidType(input)) {
                 console.log("Invalid input type, please try again.")
@@ -112,26 +122,37 @@ export class Player {
         return response as Cheese
     }
 
-    // @ 2023.09.20 [under testing]
-    async selectCheese(player: Player, board: Board, isMovingStage: boolean) {
-        // get user input (the position of the cheese that the player wants to move)
-        const input = await getUserInput(isMovingStage)
+    /**
+     * Select a cheese for the player to move.
+     * @param player The player selecting the cheese.
+     * @param board The game board.
+     * @returns The selected cheese, or null if not found.
+     */
+    async selectCheese(player: Player, board: Board): Promise<Cheese | null> {
+        let selectedCheese: Cheese | null = null
 
-        // 從board.state中找到player選擇的棋子
-        const selectedCheese = board.state.get(input)
-        if (selectedCheese != null) {
-            if (selectedCheese.belongTo !== player) {
+        while (selectedCheese == null) {
+            const input = await getUserInput(STAGE.SELECTING)
+
+            selectedCheese = board.state.get(input) as Cheese | null
+
+            if (selectedCheese != null) {
+                if (selectedCheese.belongTo != null) {
+                    if (selectedCheese.belongTo !== player) {
+                        console.log(
+                            "You can only move your own cheese. Please select again."
+                        )
+                        selectedCheese = null // Reset the selected cheese if it belongs to the wrong player
+                    }
+                }
+                await this.selectCheese(player, board) // Recursively call the function on invalid input
+            } else {
                 console.log(
-                    "You can only move your own cheese. Please select again."
+                    "There is no cheese at this position. Please try again."
                 )
-                await this.selectCheese(player, board, isMovingStage)
             }
-        } else {
-            console.log(
-                "There is no cheese at this position. Please try again."
-            )
         }
 
-        return selectedCheese as Cheese
+        return selectedCheese
     }
 }

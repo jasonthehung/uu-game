@@ -1,3 +1,5 @@
+import { Stage } from "../tools/typeChecking"
+
 export const CHEESE_POSITION = [
     "A1",
     "A4",
@@ -24,3 +26,9 @@ export const CHEESE_POSITION = [
     "G4",
     "G7",
 ]
+
+export const STAGE: { [key: string]: Stage } = {
+    PLACING: "placing",
+    SELECTING: "selecting",
+    MOVING: "moving",
+}

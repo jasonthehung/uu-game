@@ -82,11 +82,12 @@ export class Player {
     async placeCheese(player: Player, board: Board) {
         console.log(`Round [${board.round}]: ${player.name}'s turn`)
 
+        const isMovingStage = false
         let response: Cheese | null = null
         let isValid = false
 
         while (!isValid) {
-            const input = await getUserInput()
+            const input = await getUserInput(isMovingStage)
 
             if (!isValidType(input)) {
                 console.log("Invalid input type, please try again.")

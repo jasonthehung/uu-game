@@ -25,7 +25,7 @@ class Main {
         let p2 = this.player2
 
         // 雙方放置棋子，直到雙方都放置了 9 個棋子
-        while (p1.cheeses.size < 9 || p2.cheeses.size < 9) {
+        while (p1.cheeses.size < 4 || p2.cheeses.size < 4) {
             // 決定當前要放置棋子的玩家是誰
             const currentPlayer = p1.moved ? p2 : p1
             // 開始放置棋子
@@ -43,6 +43,9 @@ class Main {
             await this.board.printBoard()
         }
 
+        // Moving stage
+        console.log("==================== Moving stage ====================")
+
         // 開始移動棋子
         // 結束條件：
         // 1. 其中一方棋子數量少於 3 個
@@ -52,7 +55,13 @@ class Main {
             console.log(
                 `Round [${this.board.round}]: ${currentPlayer.name}'s turn`
             )
-            console.log(`Select `)
+            console.log(`Select a cheese to move:`)
+            const response = await currentPlayer.moveCheese(
+                currentPlayer,
+                this.board
+            )
+            console.log(response)
+
             currentPlayer.moveCheese(p1, this.board)
         }
 

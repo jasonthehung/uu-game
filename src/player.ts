@@ -143,32 +143,6 @@ export class Player {
      * @returns The selected cheese, or null if not found.
      */
     async selectCheese(player: Player, board: Board): Promise<Cheese | null> {
-        // let selectedCheese: Cheese | null = null
-
-        // while (selectedCheese == null) {
-        //     const input = await getUserInput(STAGE.SELECTING)
-
-        //     selectedCheese = board.state.get(input) as Cheese | null
-
-        //     if (selectedCheese != null) {
-        //         if (selectedCheese.belongTo != null) {
-        //             if (selectedCheese.belongTo !== player) {
-        //                 console.log(
-        //                     "You can only move your own cheese. Please select again."
-        //                 )
-        //                 selectedCheese = null // Reset the selected cheese if it belongs to the wrong player
-        //             }
-        //         }
-        //         await this.selectCheese(player, board) // Recursively call the function on invalid input
-        //     } else {
-        //         console.log(
-        //             "There is no cheese at this position. Please try again."
-        //         )
-        //     }
-        // }
-
-        // return selectedCheese
-
         while (true) {
             const input = await getUserInput(STAGE.SELECTING)
             const selectedCheese = board.state.get(input) as Cheese | null

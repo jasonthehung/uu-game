@@ -69,10 +69,12 @@ export class Player {
     }
 
     // @ TODO
+    // * 1. 把規則補上 "_rules"
     async moveCheeseTo(
         player: Player,
         board: Board,
-        selectedCheese: Cheese | null
+        selectedCheese: Cheese | null,
+        rules: Map<Position, Position[]>
     ) {
         if (selectedCheese === null) {
             throw new Error(

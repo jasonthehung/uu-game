@@ -112,13 +112,26 @@ export class Player {
         return response as Cheese
     }
 
-    // @ TODO
+    // @ 2023.09.20 [under testing]
     async selectCheese(player: Player, board: Board, isMovingStage: boolean) {
         // get user input (the position of the cheese that the player wants to move)
         const input = await getUserInput(isMovingStage)
 
-        // 從board.state中找到對應的cheese並檢查是否為null
-        // if (board.state.get(input) != null)
-        // const selectedCheese =
+        // 從board.state中找到player選擇的棋子
+        const selectedCheese = board.state.get(input)
+        if (selectedCheese != null) {
+            if (selectedCheese.belongTo !== player) {
+                console.log(
+                    "You can only move your own cheese. Please select again."
+                )
+                await this.selectCheese(player, board, isMovingStage)
+            }
+        } else {
+            console.log(
+                "There is no cheese at this position. Please try again."
+            )
+        }
+
+        return selectedCheese as Cheese
     }
 }

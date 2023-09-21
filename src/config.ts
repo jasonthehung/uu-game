@@ -1,5 +1,26 @@
 import { Position } from "../tools/typeChecking"
 
+export const STAGE: { [key: string]: Stage } = {
+    PLACING: "placing",
+    SELECTING: "selecting",
+    MOVING: "moving",
+}
+
+export const ERROR_MESSAGE = {
+    SELECT_EMPTY_POSITION:
+        "🚫 There is no piece in the place you selected, please select again.",
+    SELECT_ANOTHER_PLAYER_PIECE:
+        "🚫 The piece you selected is not yours, please select again.",
+    PLACE_IS_ACCUPIED: "🚫 The place is accupied, please choice another place.",
+    INVALID_MOVE:
+        "🚫 The place you choice is not a valid move, please choice another place.",
+    NO_WAY_TO_MOVE: "🚫 There is no way to move, please choice another piece.",
+    INVALID_INPUT_TYPE: "🚫 Invalid input, please try again.",
+    SPOT_TAKEN: "🚫 Spot already taken, please choose another spot.",
+}
+
+export type Stage = "placing" | "selecting" | "moving"
+
 export const PIECES_POSITION: Position[] = [
     "A1",
     "A4",
@@ -26,18 +47,3 @@ export const PIECES_POSITION: Position[] = [
     "G4",
     "G7",
 ]
-
-export const STAGE: { [key: string]: Stage } = {
-    PLACING: "placing",
-    SELECTING: "selecting",
-    MOVING: "moving",
-}
-
-export const ERROR_MESSAGE = {
-    SELECT_EMPTY_POSITION:
-        "There is no piece in the place you selected, please select again.",
-    SELECT_ANOTHER_PLAYER_PIECE:
-        "The piece you selected is not yours, please select again.",
-}
-
-export type Stage = "placing" | "selecting" | "moving"

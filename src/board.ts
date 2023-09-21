@@ -9,13 +9,7 @@ export class Board {
 
     constructor() {
         this._state = new Map<Position | null, Piece | null>()
-        // this.initializeBoard()
     }
-    // initializeBoard() {
-    //     PIECES_POSITION.forEach((position) => {
-    //         this._state.set(position as Position, null)
-    //     })
-    // }
 
     get state(): Map<Position | null, Piece | null> {
         return this._state

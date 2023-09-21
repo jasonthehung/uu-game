@@ -3,6 +3,7 @@ import { getUserInput } from "../tools/getUserInput"
 import { Piece } from "./piece"
 import { STAGE, ERROR_MESSAGE } from "./config"
 import { Board } from "./board"
+import { Rules } from "../tools/rulesChecking"
 
 export class Player {
     // player's name
@@ -68,53 +69,6 @@ export class Player {
         return this._pieces
     }
 
-    // @ TODO
-    // * 1. 把規則補上 "_rules"
-    async movePieceTo(
-        player: Player,
-        board: Board,
-        selectedCheese: Piece | null,
-        rules: Map<Position, Position[]>
-    ) {
-        if (selectedCheese === null) {
-            throw new Error(
-                "Variable 'selectedCheese' in 'moveCheeseTo' function is null"
-            )
-        }
-        // 1. 選擇要移動的棋子 (只能是自己的棋子)
-        // 2. 選擇要移動到的位置 (只能是空的位置和合法的位置)
-        let isValid = false
-        while (!isValid) {
-            const thePlaceWantToMoveTo = await getUserInput(STAGE.MOVING)
-            if (board.state.get(thePlaceWantToMoveTo) != null) {
-                console.log(
-                    "The place is accupied, please choice another place."
-                )
-            } else {
-                // 檢查要移動到的位置是否符合規則
-                if (
-                    thePlaceWantToMoveTo in rules.get(selectedCheese.position!)!
-                ) {
-                    // // 移動棋子
-                    // player.pieces.delete(selectedCheese)
-                    // player.pieces.add(
-                    //     new Piece(player.name, thePlaceWantToMoveTo)
-                    // )
-                    // player.moves++
-                }
-
-                isValid = true
-            }
-        }
-    }
-
-    // 3. 移動棋子
-    // 4. 檢查是否有連成一線，若有，則可以選擇對方的一枚棋子移除
-    // 5. 若有移除對方的棋子，則對方棋子數量減一
-    // * 應該是在外面
-    // 6. 若對方棋子數量少於 3 個，則遊戲結束
-    // 7. 若對方無法移動棋子，則遊戲結束
-
     /**
      *
      * @param player
@@ -126,14 +80,14 @@ export class Player {
             const input = await getUserInput(STAGE.PLACING)
 
             if (!isValidType(input)) {
-                console.log("Invalid input type, please try again.")
+                console.log(ERROR_MESSAGE.INVALID_INPUT_TYPE)
                 continue
             }
             const existingPiece = board.state.get(input)
 
             if (existingPiece != null) {
-                console.log("Spot already taken, please choose another spot.")
-                continue // Restart the loop to ask for input again
+                console.log(ERROR_MESSAGE.SPOT_TAKEN)
+                continue
             }
 
             try {
@@ -156,7 +110,11 @@ export class Player {
      * @param board The game board.
      * @returns The selected piece, or null if not found.
      */
-    async selectPiece(player: Player, board: Board): Promise<Piece> {
+    private async selectPiece(
+        player: Player,
+        board: Board,
+        rules: Rules
+    ): Promise<Piece> {
         while (true) {
             // 輸入並取得座標
             const input = await getUserInput(STAGE.SELECTING)
@@ -165,18 +123,70 @@ export class Player {
             // 檢查取得的棋子是否為null或是非本方棋子
             const selectedPiece = board.state.get(input)
 
+            if (!isValidType(input)) {
+                console.log(ERROR_MESSAGE.INVALID_INPUT_TYPE)
+                continue
+            }
+
             // 如果選擇的棋子是null或undefined，則印出錯誤訊息
             if (selectedPiece === null || selectedPiece === undefined) {
                 console.log(ERROR_MESSAGE.SELECT_EMPTY_POSITION)
                 continue
             }
 
+            // 如果選擇的棋子不是本方棋子，則印出錯誤訊息
             if (!player.pieces.has(selectedPiece)) {
                 console.log(ERROR_MESSAGE.SELECT_ANOTHER_PLAYER_PIECE)
                 continue
             }
 
+            if (!rules.isValidMove(board, selectedPiece)) {
+                console.log(ERROR_MESSAGE.NO_WAY_TO_MOVE)
+                continue
+            }
+
             return selectedPiece
         }
+    }
+
+    private async movePieceTo(
+        player: Player,
+        board: Board,
+        selectedPiece: Piece | null,
+        rules: Rules
+    ) {
+        if (!selectedPiece) {
+            throw new Error(
+                "Variable 'selectedPiece' in 'movePieceTo' function is null"
+            )
+        }
+
+        let newPosition = await getUserInput(STAGE.MOVING)
+
+        while (true) {
+            if (board.state.get(newPosition) != null) {
+                console.log(ERROR_MESSAGE.PLACE_IS_ACCUPIED)
+            } else if (!rules.isValidMove(board, selectedPiece, newPosition)) {
+                console.log(ERROR_MESSAGE.INVALID_MOVE)
+            } else {
+                break // Input is valid, exit the loop
+            }
+
+            newPosition = await getUserInput(STAGE.MOVING)
+        }
+
+        const newPiece = new Piece(player, newPosition)
+
+        // Update player's pieces and board state
+        player.pieces.delete(selectedPiece)
+        board.state.set(newPosition, newPiece)
+
+        board.state.delete(selectedPiece.position)
+        player.pieces.add(newPiece)
+    }
+
+    async movePiece(player: Player, board: Board, rules: Rules) {
+        const piece = await this.selectPiece(player, board, rules)
+        await this.movePieceTo(player, board, piece, rules)
     }
 }

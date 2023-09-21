@@ -1,3 +1,5 @@
+import { Board } from "../src/board"
+import { Piece } from "../src/piece"
 import { Position } from "./typeChecking"
 
 export class Rules {
@@ -32,5 +34,18 @@ export class Rules {
 
     get movingRules(): Map<Position, Position[]> {
         return this._movingRules
+    }
+
+    isValidMove(
+        board: Board,
+        selectedPiece: Piece,
+        moveTo?: Position
+    ): boolean {
+        const arr = this._movingRules.get(selectedPiece.position!) || []
+
+        // Check if there's at least one valid move in arr
+        const hasValidMove = arr.some((position) => !board.state.has(position))
+
+        return moveTo ? arr.includes(moveTo) && hasValidMove : hasValidMove
     }
 }

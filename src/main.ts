@@ -1,7 +1,7 @@
 import { Board } from "./board"
 import { Piece } from "./piece"
 import { Player } from "./player"
-import { Rules } from "../tools/rules"
+import { Rules } from "../tools/rulesChecking"
 
 class Main {
     private _board: Board
@@ -22,10 +22,10 @@ class Main {
         let p1 = this._player1
         let p2 = this._player2
 
+        await this._board.printBoard()
+
         // * 方放置棋子，直到雙方都放置了 9 個棋子
-        while (p1.pieces.size < 4 || p2.pieces.size < 4) {
-            // 印出棋盤
-            await this._board.printBoard()
+        while (p1.pieces.size < 2 || p2.pieces.size < 2) {
             // 決定當前要放置棋子的玩家是誰
             const currentPlayer = p1.moved ? p2 : p1
             // 印出當前回合以及玩家的名字
@@ -43,6 +43,8 @@ class Main {
 
             // 更新棋盤
             await this._board.updateBoard(this._board, piece)
+            // 印出棋盤
+            await this._board.printBoard()
         }
 
         // Moving stage
@@ -54,24 +56,16 @@ class Main {
         // 結束條件：
         // 1. 其中一方棋子數量少於 3 個
         // 2. 其中一方無法移動棋子
-        while (p1.pieces.size >= 3 && p2.pieces.size >= 3) {
+        while (p1.pieces.size >= 1 && p2.pieces.size >= 1) {
             const currentPlayer = p1.moved ? p2 : p1
             console.log(
                 `Round [${this._board.round}]: ${currentPlayer.name}'s turn`
             )
 
-            // 選擇要移動的棋子
-            const seletedCheese = await currentPlayer.selectPiece(
-                currentPlayer,
-                this._board
-            )
-
-            // 選擇要移動到的位置
-            await currentPlayer.movePieceTo(
+            await currentPlayer.movePiece(
                 currentPlayer,
                 this._board,
-                (seletedCheese as Piece) || null,
-                this._rules.movingRules
+                this._rules
             )
 
             // 回合交換
@@ -79,7 +73,6 @@ class Main {
             p2.moved = !p2.moved
 
             // 更新棋盤
-            // await this.board.updateBoard(this.board, response)
             // 印出棋盤
             await this._board.printBoard()
         }

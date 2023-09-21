@@ -1,7 +1,5 @@
-import { Position, isValidType } from "../tools/typeChecking"
-import { getUserInput } from "../tools/getUserInput"
 import { Board } from "./board"
-import { Cheese } from "./cheeses"
+import { Piece } from "./pieces"
 import { Player } from "./player"
 import { Rules } from "../tools/rules"
 
@@ -28,7 +26,7 @@ class Main {
         let p2 = this._player2
 
         // 雙方放置棋子，直到雙方都放置了 9 個棋子
-        while (p1.cheeses.size < 4 || p2.cheeses.size < 4) {
+        while (p1.pieces.size < 4 || p2.pieces.size < 4) {
             // 決定當前要放置棋子的玩家是誰
             const currentPlayer = p1.moved ? p2 : p1
             // 開始放置棋子
@@ -56,7 +54,7 @@ class Main {
         // 結束條件：
         // 1. 其中一方棋子數量少於 3 個
         // 2. 其中一方無法移動棋子
-        while (p1.cheeses.size >= 3 && p2.cheeses.size >= 3) {
+        while (p1.pieces.size >= 3 && p2.pieces.size >= 3) {
             const currentPlayer = p1.moved ? p2 : p1
             console.log(
                 `Round [${this._board.round}]: ${currentPlayer.name}'s turn`
@@ -72,7 +70,7 @@ class Main {
             await currentPlayer.moveCheeseTo(
                 currentPlayer,
                 this._board,
-                (seletedCheese as Cheese) || null,
+                (seletedCheese as Piece) || null,
                 this._rules.movingRules
             )
 

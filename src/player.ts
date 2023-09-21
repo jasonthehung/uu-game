@@ -1,7 +1,7 @@
 import { Position, isValidType } from "../tools/typeChecking"
 import { getUserInput } from "../tools/getUserInput"
 import { Board } from "./board"
-import { Cheese } from "./cheeses"
+import { Piece } from "./pieces"
 import { STAGE } from "./config"
 
 export class Player {
@@ -15,8 +15,8 @@ export class Player {
     private _moved: boolean
     // player's icon
     private _icon: string
-    // total cheeses that the player has
-    private _cheeese: Set<Cheese> = new Set<Cheese>()
+    // total pieces that the player has
+    private _pieces: Set<Piece> = new Set<Piece>()
 
     constructor(name: string, moved: boolean, icon: string) {
         this._name = name
@@ -64,8 +64,8 @@ export class Player {
         this._icon = icon
     }
 
-    get cheeses(): Set<Cheese> {
-        return this._cheeese
+    get pieces(): Set<Piece> {
+        return this._pieces
     }
 
     // @ TODO
@@ -73,7 +73,7 @@ export class Player {
     async moveCheeseTo(
         player: Player,
         board: Board,
-        selectedCheese: Cheese | null,
+        selectedCheese: Piece | null,
         rules: Map<Position, Position[]>
     ) {
         if (selectedCheese === null) {
@@ -106,7 +106,7 @@ export class Player {
     async placeCheese(player: Player, board: Board, isMovingStage: boolean) {
         console.log(`Round [${board.round}]: ${player.name}'s turn`)
 
-        let response: Cheese | null = null
+        let response: Piece | null = null
         let isValid = false
 
         while (!isValid) {
@@ -117,14 +117,14 @@ export class Player {
             } else {
                 const existingCheese = board.state.get(input)
 
-                // use `!=` instead of `!==` because `existingCheese` can be null or undefined
+                // use `!=` instead of `!==` because `existingPiece` can be null or undefined
                 if (existingCheese != null) {
                     console.log(
                         "Spot already taken, please choose another spot."
                     )
                 } else {
-                    response = new Cheese(player, input)
-                    player.cheeses.add(response)
+                    response = new Piece(player, input)
+                    player.pieces.add(response)
                     player.moves++
                     isValid = true
                 }
@@ -133,31 +133,31 @@ export class Player {
 
         player.moved = false
 
-        return response as Cheese
+        return response as Piece
     }
 
     /**
-     * Select a cheese for the player to move.
-     * @param player The player selecting the cheese.
+     * Select a piece for the player to move.
+     * @param player The player selecting the piece.
      * @param board The game board.
-     * @returns The selected cheese, or null if not found.
+     * @returns The selected piece, or null if not found.
      */
-    async selectCheese(player: Player, board: Board): Promise<Cheese | null> {
+    async selectCheese(player: Player, board: Board): Promise<Piece | null> {
         while (true) {
             const input = await getUserInput(STAGE.SELECTING)
-            const selectedCheese = board.state.get(input) as Cheese | null
+            const selectedCheese = board.state.get(input) as Piece | null
 
             if (selectedCheese != null) {
                 if (selectedCheese.belongTo === player) {
                     return selectedCheese
                 } else {
                     console.log(
-                        "You can only move your own cheese. Please select again."
+                        "You can only move your own piece. Please select again."
                     )
                 }
             } else {
                 console.log(
-                    "There is no cheese at this position. Please try again."
+                    "There is no piece at this position. Please try again."
                 )
             }
         }

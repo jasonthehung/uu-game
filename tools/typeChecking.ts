@@ -1,8 +1,8 @@
-import { CHEESE_POSITION } from "../src/cheeses"
+import { PIECES_POSITION } from "../src/config"
 
 // Type Guard Function
 export function isValidType(input: string): input is Position {
-    return CHEESE_POSITION.includes(input)
+    return PIECES_POSITION.includes(input)
 }
 
 export type Stage = "placing" | "selecting" | "moving"

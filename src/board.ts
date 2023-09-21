@@ -1,23 +1,23 @@
 import { Position } from "../tools/typeChecking"
-import { CHEESE_POSITION } from "./config"
-import { Cheese } from "./cheeses"
+import { PIECES_POSITION } from "./config"
+import { Piece } from "./pieces"
 
 export class Board {
-    // the cheeses on the board or not
-    private _state: Map<Position | null, Cheese | null>
+    // the pieces on the board or not
+    private _state: Map<Position | null, Piece | null>
     private _round: number = 1
 
     constructor() {
-        this._state = new Map<Position | null, Cheese | null>()
+        this._state = new Map<Position | null, Piece | null>()
         // this.initializeBoard()
     }
     // initializeBoard() {
-    //     CHEESE_POSITION.forEach((position) => {
+    //     PIECES_POSITION.forEach((position) => {
     //         this._state.set(position as Position, null)
     //     })
     // }
 
-    get state(): Map<Position | null, Cheese | null> {
+    get state(): Map<Position | null, Piece | null> {
         return this._state
     }
 
@@ -32,7 +32,7 @@ export class Board {
     async printBoard() {
         const P = []
 
-        for (const position of CHEESE_POSITION) {
+        for (const position of PIECES_POSITION) {
             P.push(
                 this._state.get(position as Position)?.belongTo?.icon ||
                     position
@@ -61,7 +61,7 @@ export class Board {
     }
 
     // @ TODO: 應該還要有狀態改變的參數
-    async updateBoard(board: Board, response: Cheese) {
+    async updateBoard(board: Board, response: Piece) {
         const position = response.position as Position
 
         if (!board.state.has(position)) {

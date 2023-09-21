@@ -1,6 +1,6 @@
 import { Stage } from "../tools/typeChecking"
 
-export const CHEESE_POSITION = [
+export const PIECES_POSITION = [
     "A1",
     "A4",
     "A7",

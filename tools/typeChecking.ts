@@ -1,11 +1,9 @@
 import { PIECES_POSITION } from "../src/config"
 
 // Type Guard Function
-export function isValidType(input: string): input is Position {
+export function isValidType(input: Position): input is Position {
     return PIECES_POSITION.includes(input)
 }
-
-export type Stage = "placing" | "selecting" | "moving"
 
 export type Position =
     | "A1"

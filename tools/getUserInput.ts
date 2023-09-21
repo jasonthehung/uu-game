@@ -1,5 +1,6 @@
 import * as readline from "readline"
-import { Position, Stage } from "../tools/typeChecking"
+import { Position } from "../tools/typeChecking"
+import { Stage } from "../src/config"
 
 export async function getUserInput(stage: Stage): Promise<Position> {
     let questionText: string

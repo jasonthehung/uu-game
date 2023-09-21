@@ -1,6 +1,6 @@
-import { Stage } from "../tools/typeChecking"
+import { Position } from "../tools/typeChecking"
 
-export const PIECES_POSITION = [
+export const PIECES_POSITION: Position[] = [
     "A1",
     "A4",
     "A7",
@@ -32,3 +32,12 @@ export const STAGE: { [key: string]: Stage } = {
     SELECTING: "selecting",
     MOVING: "moving",
 }
+
+export const ERROR_MESSAGE = {
+    SELECT_EMPTY_POSITION:
+        "There is no piece in the place you selected, please select again.",
+    SELECT_ANOTHER_PLAYER_PIECE:
+        "The piece you selected is not yours, please select again.",
+}
+
+export type Stage = "placing" | "selecting" | "moving"

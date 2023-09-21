@@ -1,5 +1,5 @@
 import { Board } from "./board"
-import { Piece } from "./pieces"
+import { Piece } from "./piece"
 import { Player } from "./player"
 import { Rules } from "../tools/rules"
 
@@ -18,31 +18,31 @@ class Main {
 
     // start the game
     async start() {
-        // print the board
-        this._board.printBoard()
-
         // assign the player object to p1, p2 variable
         let p1 = this._player1
         let p2 = this._player2
 
-        // 雙方放置棋子，直到雙方都放置了 9 個棋子
+        // * 方放置棋子，直到雙方都放置了 9 個棋子
         while (p1.pieces.size < 4 || p2.pieces.size < 4) {
+            // 印出棋盤
+            await this._board.printBoard()
             // 決定當前要放置棋子的玩家是誰
             const currentPlayer = p1.moved ? p2 : p1
+            // 印出當前回合以及玩家的名字
+            console.log(
+                `Round [${this._board.round}]: ${currentPlayer.name}'s turn`
+            )
             // 開始放置棋子
-            const response = await currentPlayer.placeCheese(
+            const piece = await currentPlayer.placePiece(
                 currentPlayer,
-                this._board,
-                false
+                this._board
             )
             // 回合交換
             p1.moved = !p1.moved
             p2.moved = !p2.moved
 
             // 更新棋盤
-            await this._board.updateBoard(this._board, response)
-            // 印出棋盤
-            await this._board.printBoard()
+            await this._board.updateBoard(this._board, piece)
         }
 
         // Moving stage
@@ -61,13 +61,13 @@ class Main {
             )
 
             // 選擇要移動的棋子
-            const seletedCheese = await currentPlayer.selectCheese(
+            const seletedCheese = await currentPlayer.selectPiece(
                 currentPlayer,
                 this._board
             )
 
             // 選擇要移動到的位置
-            await currentPlayer.moveCheeseTo(
+            await currentPlayer.movePieceTo(
                 currentPlayer,
                 this._board,
                 (seletedCheese as Piece) || null,

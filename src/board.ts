@@ -1,6 +1,6 @@
 import { Position } from "../tools/typeChecking"
 import { PIECES_POSITION } from "./config"
-import { Piece } from "./pieces"
+import { Piece } from "./piece"
 
 export class Board {
     // the pieces on the board or not
@@ -33,10 +33,7 @@ export class Board {
         const P = []
 
         for (const position of PIECES_POSITION) {
-            P.push(
-                this._state.get(position as Position)?.belongTo?.icon ||
-                    position
-            )
+            P.push(this._state.get(position)?.belongTo?.icon || position)
         }
 
         console.log(
@@ -61,11 +58,11 @@ export class Board {
     }
 
     // @ TODO: 應該還要有狀態改變的參數
-    async updateBoard(board: Board, response: Piece) {
-        const position = response.position as Position
+    async updateBoard(board: Board, piece: Piece) {
+        const position = piece.position as Position
 
         if (!board.state.has(position)) {
-            board.state.set(position, response)
+            board.state.set(position, piece)
         } else {
             throw new Error("Bug: Duplicate position !!!")
         }

@@ -1,5 +1,4 @@
 import { Board } from "./board"
-import { Piece } from "./piece"
 import { Player } from "./player"
 import { Rules } from "../tools/rulesChecking"
 
@@ -76,15 +75,6 @@ class Main {
             // 印出棋盤
             await this._board.printBoard()
         }
-
-        // // Add an event listener to handle close event if needed
-        // rl.on("close", () => {
-        //     console.log("User inputs recorded:")
-        //     this.playerOneInputs.forEach((input, index) => {
-        //         console.log(`${index + 1}: ${input}`)
-        //     })
-        //     process.exit(0) // Optionally, exit the process gracefully
-        // })
     }
 }
 

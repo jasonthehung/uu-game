@@ -1,4 +1,4 @@
-import { Position, isValidType } from "../tools/typeChecking"
+import { isValidType } from "../tools/typeChecking"
 import { getUserInput } from "../tools/getUserInput"
 import { Piece } from "./piece"
 import { STAGE, ERROR_MESSAGE } from "./config"

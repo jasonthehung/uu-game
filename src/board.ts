@@ -1,11 +1,14 @@
 import { Position } from "../tools/typeChecking"
 import { PIECES_POSITION } from "./config"
 import { Piece } from "./piece"
+import { Rules } from "../tools/rulesChecking"
+import { Player } from "./player"
 
 export class Board {
     // the pieces on the board or not
     private _state: Map<Position | null, Piece | null>
     private _round: number = 1
+    private _rules: Rules = new Rules()
 
     constructor() {
         this._state = new Map<Position | null, Piece | null>()
@@ -51,7 +54,7 @@ export class Board {
         )
     }
 
-    // @ TODO: 應該還要有狀態改變的參數
+    // TODO: 刪除這個 function，把狀態改變融入到玩家的操作中
     async updateBoard(board: Board, piece: Piece) {
         const position = piece.position as Position
 
@@ -61,6 +64,24 @@ export class Board {
             throw new Error("Bug: Duplicate position !!!")
         }
         board.round++
+    }
+
+    // TODO: 檢查是否有連線
+    async lineCheck(newPiece: Piece): Promise<boolean> {
+        const position = newPiece.position as Position
+        const player = newPiece.belongTo as Player
+        const positionArray = this._rules.movingRules.get(position)!
+
+        for (let eachPosition of positionArray) {
+            if (this._state.get(eachPosition)?.belongTo !== player) {
+                console.log(
+                    "Aadasdadadadada  ",
+                    this._state.get(eachPosition)?.belongTo
+                )
+                return false
+            }
+        }
+        return true
     }
 
     // printBoard() {

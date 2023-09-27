@@ -149,6 +149,7 @@ export class Player {
         }
     }
 
+    // movePieceTo has already updated the board state
     private async movePieceTo(
         player: Player,
         board: Board,
@@ -183,10 +184,16 @@ export class Player {
 
         board.state.delete(selectedPiece.position)
         player.pieces.add(newPiece)
+
+        return newPiece
     }
 
     async movePiece(player: Player, board: Board, rules: Rules) {
         const piece = await this.selectPiece(player, board, rules)
-        await this.movePieceTo(player, board, piece, rules)
+        const newPiece = await this.movePieceTo(player, board, piece, rules)
+
+        // TODO
+        const isLined = await board.lineCheck(newPiece)
+        console.log(`isLined: ${isLined}`)
     }
 }

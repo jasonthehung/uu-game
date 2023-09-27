@@ -24,7 +24,7 @@ class Main {
         await this._board.printBoard()
 
         // * 方放置棋子，直到雙方都放置了 9 個棋子
-        while (p1.pieces.size < 2 || p2.pieces.size < 2) {
+        while (p1.pieces.size < 3 || p2.pieces.size < 3) {
             // 決定當前要放置棋子的玩家是誰
             const currentPlayer = p1.moved ? p2 : p1
             // 印出當前回合以及玩家的名字

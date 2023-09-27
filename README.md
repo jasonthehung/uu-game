@@ -26,4 +26,9 @@ You can click [nodejs](https://nodejs.org/en) to download the latest version of 
 
 ### TODO:
 
-1. Enter lower case still valid
+1. Create line rules for board to check after player made a move.
+2. Enter lower case still valid
+
+-   Personal note
+
+    1. Rule 是一個 class 感覺怪怪的(?), rules 應該會換成一個 object 用來輔助 board class，意思就是說，rules 應該要是 board 的工具！

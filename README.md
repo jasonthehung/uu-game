@@ -1,9 +1,29 @@
-# uu-game
+# Setting up an environment
 
----
+The following are prerequisites to running the application in JavaScript runtime environment.
 
--   TODO:
+### Nodejs
 
-    1. 放置階段，如果連成三條線怎麼辦？
+You can click [nodejs](https://nodejs.org/en) to download the latest version of nodejs.
 
-    2. 輸入小寫也可以正常遊玩
+-   After installation, you can check the version of nodejs by running the following command in your terminal.
+
+    ```
+    node -v
+    ```
+
+-   Install the dependencies by running the following command in your terminal.
+
+    ```
+    npm install
+    ```
+
+-   Run the application by running the following command in your terminal.
+
+    ```
+    npm start
+    ```
+
+### TODO:
+
+1. Enter lower case still valid

@@ -194,6 +194,5 @@ export class Player {
 
         // TODO
         const isLined = await board.lineCheck(newPiece)
-        console.log(`isLined: ${isLined}`)
     }
 }

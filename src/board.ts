@@ -70,18 +70,19 @@ export class Board {
     async lineCheck(newPiece: Piece): Promise<boolean> {
         const position = newPiece.position as Position
         const player = newPiece.belongTo as Player
-        const positionArray = this._rules.movingRules.get(position)!
+        const positionArray = this._rules.lineRules.get(position)!
 
-        for (let eachPosition of positionArray) {
-            if (this._state.get(eachPosition)?.belongTo !== player) {
-                console.log(
-                    "Aadasdadadadada  ",
-                    this._state.get(eachPosition)?.belongTo
-                )
-                return false
+        let lined = false
+        for (let positions of positionArray) {
+            for (let eachPosition of positions) {
+                if (this.state.get(eachPosition)?.belongTo !== player) {
+                    break
+                }
             }
+            lined = true
         }
-        return true
+
+        return lined
     }
 
     // printBoard() {

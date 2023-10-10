@@ -4,6 +4,7 @@ export const STAGE: { [key: string]: Stage } = {
     PLACING: "placing",
     SELECTING: "selecting",
     MOVING: "moving",
+    REMOVE: "removing",
 }
 
 export const ERROR_MESSAGE = {
@@ -15,11 +16,12 @@ export const ERROR_MESSAGE = {
     INVALID_MOVE:
         "🚫 The place you choice is not a valid move, please choice another place.",
     NO_WAY_TO_MOVE: "🚫 There is no way to move, please choice another piece.",
-    INVALID_INPUT_TYPE: "🚫 Invalid input, please try again.",
+    INVALID_INPUT_TYPE: "🚫 Invalid input type, please try again.",
     SPOT_TAKEN: "🚫 Spot already taken, please choose another spot.",
+    INVALID_INPUT: "🚫 Invalid input, please try again.",
 }
 
-export type Stage = "placing" | "selecting" | "moving"
+export type Stage = "placing" | "selecting" | "moving" | "removing"
 
 export const PIECES_POSITION: Position[] = [
     "A1",

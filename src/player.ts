@@ -192,7 +192,34 @@ export class Player {
         const piece = await this.selectPiece(player, board, rules)
         const newPiece = await this.movePieceTo(player, board, piece, rules)
 
+        await board.printBoard()
+
         // TODO
         const isLined = await board.lineCheck(newPiece)
+        if (isLined) {
+            // remove oppenent's piece from board
+            await this.removePiece(player, board)
+        }
+    }
+
+    private async removePiece(player: Player, board: Board) {
+        let input = await getUserInput(STAGE.REMOVE)
+        let piece = board.state.get(input)
+
+        while (true) {
+            if (!piece) {
+                console.log("輸入的座標沒有棋子")
+            } else if (piece.belongTo?.name === player.name) {
+                console.log("不能吃自己的棋子")
+            } else {
+                break
+            }
+
+            input = await getUserInput(STAGE.REMOVE)
+            piece = board.state.get(input)
+        }
+
+        board.state.delete(input)
+        piece.belongTo?.pieces.delete(piece)
     }
 }

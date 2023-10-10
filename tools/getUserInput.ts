@@ -15,6 +15,9 @@ export async function getUserInput(stage: Stage): Promise<Position> {
         case "moving":
             questionText = "Select a spot that you want to move to: "
             break
+        case "removing":
+            questionText = "Select a piece to remove:"
+            break
         default:
             questionText = "Invalid stage"
     }
